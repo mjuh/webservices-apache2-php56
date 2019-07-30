@@ -123,7 +123,7 @@ sh = dash.overrideAttrs (_: rec {
 
   php53 = stdenv.mkDerivation rec {
       name = "php-5.3.29";
-      sha256 = "e81beb13ec242ab700e56f366e9da52fd6cf18961d155b23304ca870e53f116c";
+      sha256 = "1480pfp4391byqzmvdmbxkdkqwdzhdylj63sfzrcgadjf9lwzqf4";
       enableParallelBuilding = true;
       nativeBuildInputs = [ pkgconfig autoconf213 ];
       src = fetchurl {
