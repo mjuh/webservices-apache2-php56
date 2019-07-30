@@ -23,18 +23,6 @@ sh = dash.overrideAttrs (_: rec {
   '';
 });
 
-  zendguard = stdenv.mkDerivation rec {
-      name = "zend-guard-53";
-      src =  fetchurl {
-          url = "https://downloads.zend.com/guard/5.5.0/ZendGuardLoader-php-5.3-linux-glibc23-x86_64.tar.gz";
-          sha256 = "6982877fdd66ecdd684591a82c5aa702a09d92aac5a2c87e9781d40b76a30098";
-      };
-      installPhase = ''
-                  mkdir -p  $out/
-                  tar zxvf  ${src} -C $out/ ZendGuardLoader-php-5.3-linux-glibc23-x86_64/php-5.3.x/ZendGuardLoader.so
-      '';
-  };
-
   pcre831 = stdenv.mkDerivation rec {
       name = "pcre-8.31";
       src = fetchurl {
@@ -121,27 +109,24 @@ sh = dash.overrideAttrs (_: rec {
   postInstall = ''(cd "$out/include" && ln -s ImageMagick* ImageMagick)'';
  };
 
-  php53 = stdenv.mkDerivation rec {
-      name = "php-5.3.29";
-      sha256 = "1480pfp4391byqzmvdmbxkdkqwdzhdylj63sfzrcgadjf9lwzqf4";
+  php56 = stdenv.mkDerivation rec {
+      name = "php-5.6.40";
+      sha256 = "005s7w167dypl41wlrf51niryvwy1hfv53zxyyr3lm938v9jbl7z";
       enableParallelBuilding = true;
-      nativeBuildInputs = [ pkgconfig autoconf213 ];
+      nativeBuildInputs = [ pkgconfig autoconf ];
       src = fetchurl {
-                 url = "https://museum.php.net/php5/php-5.3.29.tar.bz2";
+                 url = "https://www.php.net/distributions/php-5.6.40.tar.bz2";
                  inherit sha256;
              };
-      patches = [
-                 ./patch/php5/mj/fix-configure-freetype-mjengineers.patch
-                 ./patch/php5/mj/fix-exif-buffer-overflow.patch
-                 ./patch/php5/mj/php53-fix-mysqli-buffer-overflow.patch
-                 ./patch/php5/mj/fix-configure-path.patch
-      ];
       stripDebugList = "bin sbin lib modules";
       outputs = [ "out" ];
       doCheck = false;
       checkTarget = "test";
+      patches = [
+        ./patch/php5/mj/php-56-fix-apxs.patch
+      ];
       buildInputs = [
-         autoconf213
+         autoconf
          automake
          pkgconfig
          curl
@@ -261,36 +246,30 @@ sh = dash.overrideAttrs (_: rec {
       '';     
   };
 
-buildPhp53Package = args: buildPhpPackage ({ php = php53; } // args);
+buildPhp56Package = args: buildPhpPackage ({ php = php56; } // args);
 
 
-php53Packages = {
-  timezonedb = buildPhp53Package {
+php56Packages = {
+  timezonedb = buildPhp56Package {
     name = "timezonedb";
     version = "2019.1";
     sha256 = "0rrxfs5izdmimww1w9khzs9vcmgi1l90wni9ypqdyk773cxsn725";
   };
 
-  dbase = buildPhp53Package {
+  dbase = buildPhp56Package {
       name = "dbase";
       version = "5.1.0";
       sha256 = "15vs527kkdfp119gbhgahzdcww9ds093bi9ya1ps1r7gn87s9mi0";
   };
 
-  intl = buildPhp53Package {
+  intl = buildPhp56Package {
       name = "intl";
       version = "3.0.0";
       sha256 = "11sz4mx56pc1k7llgbbpz2i6ls73zcxxdwa1d0jl20ybixqxmgc8";
       inputs = [ icu58 ];
   };
 
-  zendopcache = buildPhp53Package {
-      name = "zendopcache";
-      version = "7.0.5";
-      sha256 = "1h79x7n5pylbc08cxl44fvbi1a1592n0w0mm847jirkqrhxs5r68";
-  };
-
-  imagick = buildPhp53Package {
+  imagick = buildPhp56Package {
       name = "imagick";
       version = "3.1.2";
       sha256 = "528769ac304a0bbe9a248811325042188c9d16e06de16f111fee317c85a36c93";
@@ -300,10 +279,10 @@ php53Packages = {
 };
 
   rootfs = mkRootfs {
-      name = "apache2-php53-rootfs";
+      name = "apache2-php56-rootfs";
       src = ./rootfs;
-      inherit curl coreutils findutils apacheHttpdmpmITK apacheHttpd mjHttpErrorPages php53 postfix s6 execline zendguard connectorc mjperl5Packages ;
-      ioncube = ioncube.v53;
+      inherit curl coreutils findutils apacheHttpdmpmITK apacheHttpd mjHttpErrorPages php56 postfix s6 execline connectorc mjperl5Packages ;
+      ioncube = ioncube.v56;
       s6PortableUtils = s6-portable-utils;
       s6LinuxUtils = s6-linux-utils;
       mimeTypes = mime-types;
@@ -343,7 +322,7 @@ in
 
 pkgs.dockerTools.buildLayeredImage rec {
   maxLayers = 124;
-  name = "docker-registry.intr/webservices/apache2-php53";
+  name = "docker-registry.intr/webservices/apache2-php56";
   tag = if gitAbbrev != "" then gitAbbrev else "latest";
   contents = [
     rootfs
@@ -378,7 +357,7 @@ pkgs.dockerTools.buildLayeredImage rec {
          perlPackages.JSONXS
          perlPackages.POSIXstrftimeCompiler
          perlPackages.perl
-  ] ++ collect isDerivation php53Packages;
+  ] ++ collect isDerivation php56Packages;
   config = {
     Entrypoint = [ "${rootfs}/init" ];
     Env = [
