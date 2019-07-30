@@ -302,7 +302,7 @@ php53Packages = {
   rootfs = mkRootfs {
       name = "apache2-php53-rootfs";
       src = ./rootfs;
-      inherit curl coreutils findutils apacheHttpdmpmITK apacheHttpd mjHttpErrorPages php53 postfix s6 execline zendoptimizer connectorc mjperl5Packages ;
+      inherit curl coreutils findutils apacheHttpdmpmITK apacheHttpd mjHttpErrorPages php53 postfix s6 execline zendguard connectorc mjperl5Packages ;
       ioncube = ioncube.v53;
       s6PortableUtils = s6-portable-utils;
       s6LinuxUtils = s6-linux-utils;
