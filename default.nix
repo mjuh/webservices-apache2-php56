@@ -129,7 +129,7 @@ sh = dash.overrideAttrs (_: rec {
       src = fetchurl {
                  url = "https://museum.php.net/php5/php-5.3.29.tar.bz2";
                  inherit sha256;
-             }
+             };
       patches = [
                  ./patch/php5/mj/fix-configure-freetype-mjengineers.patch
                  ./patch/php5/mj/fix-exif-buffer-overflow.patch
