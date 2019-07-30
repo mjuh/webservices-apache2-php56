@@ -1,5 +1,5 @@
---- ext/mysqli/mysqli_api.c	2013-12-10 19:04:57.000000000 +0000
-+++ ext/mysqli/mysqli_api.c	2015-10-21 15:08:29.915433295 +0000
+--- a/ext/mysqli/mysqli_api.c	2013-12-10 19:04:57.000000000 +0000
++++ b/ext/mysqli/mysqli_api.c	2015-10-21 15:08:29.915433295 +0000
 @@ -1830,7 +1830,10 @@ PHP_FUNCTION(mysqli_prepare)
  		efree(stmt);
  		RETURN_FALSE;
@@ -23,8 +23,8 @@
  
  	mysqli_resource = (MYSQLI_RESOURCE *)ecalloc (1, sizeof(MYSQLI_RESOURCE));
  	mysqli_resource->status = MYSQLI_STATUS_INITIALIZED;
---- ext/mysqli/mysqli.c	2013-12-10 19:04:57.000000000 +0000
-+++ ext/mysqli/mysqli.c	2015-10-21 15:10:15.367429397 +0000
+--- a/ext/mysqli/mysqli.c	2013-12-10 19:04:57.000000000 +0000
++++ b/ext/mysqli/mysqli.c	2015-10-21 15:10:15.367429397 +0000
 @@ -174,8 +174,10 @@ void php_clear_stmt_bind(MY_STMT *stmt T
  	php_free_stmt_bind_buffer(stmt->param, FETCH_SIMPLE);
  	/* Clean output bind */
@@ -48,8 +48,8 @@
  
  	mysqli_resource = (MYSQLI_RESOURCE *)ecalloc (1, sizeof(MYSQLI_RESOURCE));
  	mysqli_resource->ptr = (void *)stmt;
---- ext/mysqli/php_mysqli_structs.h	2013-12-10 19:04:57.000000000 +0000
-+++ ext/mysqli/php_mysqli_structs.h	2015-10-21 15:12:41.619423991 +0000
+--- a/ext/mysqli/php_mysqli_structs.h	2013-12-10 19:04:57.000000000 +0000
++++ b/ext/mysqli/php_mysqli_structs.h	2015-10-21 15:12:41.619423991 +0000
 @@ -114,6 +114,9 @@ typedef struct {
  	BIND_BUFFER	param;
  	BIND_BUFFER	result;

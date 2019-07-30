@@ -134,6 +134,7 @@ sh = dash.overrideAttrs (_: rec {
                  ./patch/php5/mj/fix-configure-freetype-mjengineers.patch
                  ./patch/php5/mj/fix-exif-buffer-overflow.patch
                  ./patch/php5/mj/php53-fix-mysqli-buffer-overflow.patch
+                 ./patch/php5/mj/fix-configure-path.patch
       ];
       stripDebugList = "bin sbin lib modules";
       outputs = [ "out" ];
@@ -239,7 +240,6 @@ sh = dash.overrideAttrs (_: rec {
        '';
       hardeningDisable = [ "bindnow" ];
       preConfigure = ''
-        cp -pr ../standard/* ext/standard
         # Don't record the configure flags since this causes unnecessary
         # runtime dependencies
         for i in main/build-defs.h.in scripts/php-config.in; do
