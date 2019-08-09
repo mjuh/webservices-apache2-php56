@@ -26,7 +26,8 @@ sh = dash.overrideAttrs (_: rec {
       name = "apache2-php56-rootfs";
       src = ./rootfs;
       inherit curl coreutils findutils apacheHttpdmpmITK apacheHttpd
-        mjHttpErrorPages php56 postfix s6 execline mjperl5Packages;
+        mjHttpErrorPages php56 postfix s6 execline;
+      mjperl5Packages = mjperl5lib;
       zendguard = zendguard56;
       ioncube = ioncube.v56;
       s6PortableUtils = s6-portable-utils;
@@ -77,33 +78,9 @@ pkgs.dockerTools.buildLayeredImage rec {
     postfix
     sh
     coreutils
-    perl
-         perlPackages.TextTruncate
-         perlPackages.TimeLocal
-         perlPackages.PerlMagick
-         perlPackages.commonsense
-         perlPackages.Mojolicious
-         perlPackages.base
-         perlPackages.libxml_perl
-         perlPackages.libnet
-         perlPackages.libintl_perl
-         perlPackages.LWP
-         perlPackages.ListMoreUtilsXS
-         perlPackages.LWPProtocolHttps
-         perlPackages.DBI
-         perlPackages.DBDmysql
-         perlPackages.CGI
-         perlPackages.FilePath
-         perlPackages.DigestPerlMD5
-         perlPackages.DigestSHA1
-         perlPackages.FileBOM
-         perlPackages.GD
-         perlPackages.LocaleGettext
-         perlPackages.HashDiff
-         perlPackages.JSONXS
-         perlPackages.POSIXstrftimeCompiler
-         perlPackages.perl
-  ] ++ collect isDerivation php56Packages;
+  ]
+  ++ collect isDerivation mjperl5Packages
+  ++ collect isDerivation php56Packages;
   config = {
     Entrypoint = [ "${rootfs}/init" ];
     Env = [
