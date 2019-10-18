@@ -13,7 +13,7 @@ let
   inherit (lib.attrsets) collect isDerivation;
   inherit (stdenv) mkDerivation;
 
-  php56DockerArgHints = lib.phpDockerArgHints php.php56;
+  php56DockerArgHints = lib.phpDockerArgHints phpDeprecated.php56;
 
   rootfs = mkRootfs {
     name = "apache2-rootfs";
@@ -21,7 +21,7 @@ let
     inherit curl coreutils findutils apacheHttpdmpmITK apacheHttpd
       mjHttpErrorPages postfix s6 execline;
     mjperl5Packages = mjperl5lib;
-    php56 = php.php56;
+    php56 = phpDeprecated.php56;
     zendguard = zendguard.loader-php56;
     ioncube = ioncube.v56;
     s6PortableUtils = s6-portable-utils;
