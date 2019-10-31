@@ -48,7 +48,7 @@ pkgs.dockerTools.buildLayeredImage rec {
     gifsicle cacert
   ]
   ++ collect isDerivation mjperl5Packages
-  ++ collect isDerivation phpPackages.php56Packages;
+  ++ collect isDerivation phpDeprecatedPackages.php56Packages;
   config = {
     Entrypoint = [ "${rootfs}/init" ];
     Env = [
