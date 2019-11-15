@@ -74,7 +74,6 @@ pkgs.dockerTools.buildLayeredImage rec {
       ls -la usr
       chmod u+w usr
       mkdir -p usr/local
-      ln -s /bin usr/bin
       ln -s /bin usr/sbin
       ln -s /bin usr/local/bin
     '';
