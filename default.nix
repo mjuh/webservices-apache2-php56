@@ -50,6 +50,7 @@ pkgs.dockerTools.buildLayeredImage rec {
     mariadbConnectorC
     logger
     perl520
+    fontconfig.out
   ]
   ++ collect isDerivation mjperl5Packages
   ++ collect isDerivation php56Packages;
