@@ -42,6 +42,7 @@ pkgs.dockerTools.buildLayeredImage rec {
     jpegoptim
     (optipng.override{ inherit libpng ;})
     imagemagick
+    ghostscript
     gifsicle nss-certs.unbundled zip
     gcc-unwrapped.lib
     glibc
@@ -49,6 +50,7 @@ pkgs.dockerTools.buildLayeredImage rec {
     mariadbConnectorC
     logger
     perl520
+    fontconfig.out
   ]
   ++ collect isDerivation mjperl5Packages
   ++ collect isDerivation php56Packages;
